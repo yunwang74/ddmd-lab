@@ -4,23 +4,21 @@ import os, sys, json, html
 from urllib.request import Request, urlopen
 from collections import defaultdict
 
-ORCID_ID = "0000-0001-8619-0455"
-TOKEN = os.environ.get("ORCID_TOKEN")
+# --- Configuration ---
+ORCID_ID = "0000-0001-8619-0455"  # your public ORCID iD
 API = f"https://pub.orcid.org/v3.0/{ORCID_ID}/works"
-HEADERS = {"Accept": "application/json"}
-if TOKEN:
-    HEADERS["Authorization"] = f"Bearer {TOKEN}"
+HEADERS = {"Accept": "application/json"}  # token-free, public API
 
+# --- Fetch ORCID public works (no auth required) ---
 print("Fetching ORCID works…", file=sys.stderr)
 try:
-    resp = urlopen(Request(API, headers=HEADERS))
-    data = json.loads(resp.read().decode("utf-8"))
+    data = json.loads(urlopen(Request(API, headers=HEADERS)).read().decode("utf-8"))
 except Exception as e:
     print("ORCID fetch failed:", e, file=sys.stderr)
-    # Continue gracefully: we'll write "No items" to the page
+    # Continue gracefully: show “No items” if fetch fails
     data = {}
 
-# ---- Build items (must happen BEFORE we iterate over items) ----
+# --- Parse items ---
 items = []
 try:
     for g in data.get("group", []):
@@ -30,7 +28,6 @@ try:
             year = (w.get("publication-date", {}) or {}).get("year", {}).get("value", "")
             doi = None
             for ext in w.get("external-ids", {}).get("external-id", []):
-                # Be robust to case variations
                 if (ext.get("external-id-type") or "").lower() == "doi":
                     doi = ext.get("external-id-value")
                     break
@@ -39,15 +36,14 @@ try:
 except Exception as e:
     print("Parse error:", e, file=sys.stderr)
 
-# Filter and sort
+# Filter by items with year; sort descending (string-safe)
 items = [i for i in items if i.get("year")]
 try:
     items.sort(key=lambda x: str(x["year"]), reverse=True)
 except Exception:
-    # Fallback if some years are weird
     items.sort(key=lambda x: (x.get("year") or ""), reverse=True)
 
-# ---- Recent list (top 12) ----
+# --- Build “Selected publications” (top 12) ---
 sel_html = []
 for it in items[:12]:
     t = html.escape(it['title'])
@@ -61,10 +57,9 @@ for it in items[:12]:
         + "&lt;/li&gt;"
     )
 
-# Use single quotes so class="muted" doesn't break the outer quotes
 new_list_html = " ".join(sel_html) if sel_html else '&lt;li class="muted"&gt;No recent items found.&lt;/li&gt;'
 
-# ---- Group by year ----
+# --- Group by year ---
 by_year = defaultdict(list)
 for it in items:
     by_year[it['year']].append(it)
@@ -94,11 +89,11 @@ for y in years_sorted:
 
 new_group_html = "\n".join(blocks) if blocks else '&lt;p class="muted"&gt;No grouped items.&lt;/p&gt;'
 
-# ---- Update publications.html ----
+# --- Update publications.html in-place (uses escaped markers) ---
 with open("publications.html", 'r', encoding='utf-8') as f:
     html_text = f.read()
 
-# Recent list section
+# Selected list
 start = html_text.find("&lt;!-- AUTO-PUBS-START --&gt;")
 end = html_text.find("&lt;!-- AUTO-PUBS-END --&gt;")
 if start != -1 and end != -1:
@@ -113,7 +108,7 @@ if start != -1 and end != -1:
     )
     html_text = before + middle + after
 
-# Grouped-by-year section
+# Grouped by year
 start2 = html_text.find("&lt;!-- AUTO-PUBS-YEAR-START --&gt;")
 end2 = html_text.find("&lt;!-- AUTO-PUBS-YEAR-END --&gt;")
 if start2 != -1 and end2 != -1:
@@ -128,7 +123,12 @@ if start2 != -1 and end2 != -1:
     )
     html_text = before2 + middle2 + after2
 
-with open("publications.html", 'w', encoding='utf-8') as f:
-    f.write(html_text)
-
-print("ORCID_TOKEN present:", bool(os.environ.get("ORCID_TOKEN")), file=sys.stderr)
+# Write back only if changed (so CI commits only when needed)
+with open("publications.html", 'r', encoding='utf-8') as f:
+    original = f.read()
+if html_text != original:
+    with open("publications.html", 'w', encoding='utf-8') as f:
+        f.write(html_text)
+    print("Updated publications.html", file=sys.stderr)
+else:
+    print("No changes to publications.html", file=sys.stderr)
