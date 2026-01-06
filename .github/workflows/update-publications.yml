@@ -17,17 +17,23 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run updater
-        run: python scripts/update_publications.py
-
-      - name: Commit changes (only if files changed)
+        shell: bash
         run: |
-          if git status --porcelain | grep -q 'publications.html'; then
+          set -euo pipefail
+          python scripts/update_publications.py
+
+      - name: Commit changes (only if publications.html changed)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! git diff --quiet HEAD -- publications.html; then
             git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
             git add publications.html
             git commit -m "Auto-update publications from ORCID"
           else
             echo "No changes — skip commit."
+          fi
 
       - name: Push changes
         uses: ad-m/github-push-action@v0.8.0
