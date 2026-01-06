@@ -73,7 +73,7 @@ for y in years_sorted:
 <ul>
 " + "
 ".join(lis) + "
-</ul>"
+</ul>
     blocks.append(block_html)
 new_group_html = "
 ".join(blocks) if blocks else '<p class="muted">No grouped items.</p>'
