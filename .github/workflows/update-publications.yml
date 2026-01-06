@@ -1,31 +1,37 @@
 
 name: Update Publications from ORCID
+
 on:
-  schedule:
-    - cron: '0 3 * * 1'
   workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'  # daily at 03:00 UTC
+
+permissions:
+  contents: write  # allow the job to commit/push to the repo
+
 jobs:
-  update-pubs:
+  update:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Update publications
-        env:
-          ORCID_TOKEN: ${{ secrets.ORCID_TOKEN }}
+
+      - name: Run updater
+        run: python scripts/update_publications.py
+
+      - name: Commit changes (only if files changed)
         run: |
-          python scripts/update_publications.py
-      - name: Commit changes
-        run: |
-          git config user.name github-actions
-          git config user.email actions@github.com
-          git add publications.html
-          git diff --cached --quiet || git commit -m "Auto-update publications"
-      - name: Push
+          if git status --porcelain | grep -q 'publications.html'; then
+            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            git add publications.html
+            git commit -m "Auto-update publications from ORCID"
+          else
+            echo "No changes — skip commit."
+          fi
+
+      - name: Push changes
+        if: success() && steps.update.outcome != 'failure'
         uses: ad-m/github-push-action@v0.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
