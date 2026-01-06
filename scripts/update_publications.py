@@ -87,12 +87,9 @@ if start != -1 and end != -1:
     before = html_text[:start]
     after = html_text[end:]
     middle = (
-        "<!-- AUTO-PUBS-START -->
-" +
-        "<ul>
-" + new_list_html + "
-</ul>
-" +
+        "<!-- AUTO-PUBS-START -->" +
+        "<ul>" + new_list_html + "
+</ul>" +
         "<!-- AUTO-PUBS-END -->"
     )
     html_text = before + middle + after
@@ -103,12 +100,10 @@ if start2 != -1 and end2 != -1:
     before2 = html_text[:start2]
     after2 = html_text[end2:]
     middle2 = (
-        "<!-- AUTO-PUBS-YEAR-START -->
-" +
+        "<!-- AUTO-PUBS-YEAR-START -->" +
         '<div class="pubs-by-year">
 ' + new_group_html + "
-</div>
-" +
+</div>" +
         "<!-- AUTO-PUBS-YEAR-END -->"
     )
     html_text = before2 + middle2 + after2
