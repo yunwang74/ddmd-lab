@@ -69,11 +69,7 @@ for y in years_sorted:
         doi_link = f" <a class='doi-link' href='{u}' target='_blank' rel='noopener'>DOI</a>" if u else ""
         doi_badge = f" <span class='badge badge-doi'>{doi_str}</span>" if doi_str else ""
         lis.append(f"<li><strong>{t}</strong>{dash}<em>{j}</em>{doi_link}{doi_badge}</li>")
-    block_html = f"<h3>{html.escape(str(y))}</h3>"
-<ul>
-" + "
-".join(lis) + "
-</ul>
+    block_html = f"<h3>{html.escape(str(y))}</h3> <ul> " + "  ".join(lis) + " </ul>"
     blocks.append(block_html)
 new_group_html = " ".join(blocks) if blocks else '<p class="muted">No grouped items.</p>'
 
@@ -88,8 +84,7 @@ if start != -1 and end != -1:
     after = html_text[end:]
     middle = (
         "<!-- AUTO-PUBS-START -->" +
-        "<ul>" + new_list_html + "
-</ul>" +
+        "<ul>" + new_list_html + "</ul>" +
         "<!-- AUTO-PUBS-END -->"
     )
     html_text = before + middle + after
@@ -101,9 +96,7 @@ if start2 != -1 and end2 != -1:
     after2 = html_text[end2:]
     middle2 = (
         "<!-- AUTO-PUBS-YEAR-START -->" +
-        '<div class="pubs-by-year">
-' + new_group_html + "
-</div>" +
+        '<div class="pubs-by-year">' + new_group_html + "</div>" +
         "<!-- AUTO-PUBS-YEAR-END -->"
     )
     html_text = before2 + middle2 + after2
