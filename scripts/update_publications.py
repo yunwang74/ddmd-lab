@@ -69,7 +69,7 @@ for y in years_sorted:
         doi_link = f" <a class='doi-link' href='{u}' target='_blank' rel='noopener'>DOI</a>" if u else ""
         doi_badge = f" <span class='badge badge-doi'>{doi_str}</span>" if doi_str else ""
         lis.append(f"<li><strong>{t}</strong>{dash}<em>{j}</em>{doi_link}{doi_badge}</li>")
-    block_html = f"<h3>{html.escape(str(y))}</h3>
+    block_html = f"<h3>{html.escape(str(y))}</h3>"
 <ul>
 " + "
 ".join(lis) + "
