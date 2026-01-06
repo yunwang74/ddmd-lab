@@ -131,4 +131,4 @@ if start2 != -1 and end2 != -1:
 with open("publications.html", 'w', encoding='utf-8') as f:
     f.write(html_text)
 
-print("Updated publications.html", file=sys.stderr)
+print("ORCID_TOKEN present:", bool(os.environ.get("ORCID_TOKEN")), file=sys.stderr)
