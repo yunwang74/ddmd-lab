@@ -7,7 +7,7 @@ on:
     - cron: '0 3 * * *'  # daily at 03:00 UTC
 
 permissions:
-  contents: write  # allow the job to commit/push to the repo
+  contents: write
 
 jobs:
   update:
@@ -28,10 +28,8 @@ jobs:
             git commit -m "Auto-update publications from ORCID"
           else
             echo "No changes — skip commit."
-          fi
 
       - name: Push changes
-        if: success() && steps.update.outcome != 'failure'
         uses: ad-m/github-push-action@v0.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
