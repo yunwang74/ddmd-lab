@@ -42,8 +42,7 @@ sel_html = []
 for it in items[:12]:
     t = html.escape(it['title']); j = html.escape(it['journal']) if it['journal'] else ''; y = html.escape(str(it['year'])); u = it['url']
     sel_html.append(f"<li><strong>{t}</strong> — <em>{j}</em> ({y})." + (f" <a href='{u}' target='_blank' rel='noopener'>DOI</a>" if u else "") + "</li>")
-new_list_html = "
-".join(sel_html) if sel_html else "<li class="muted">No recent items found.</li>"
+new_list_html = " ".join(sel_html) if sel_html else "<li class="muted">No recent items found.</li>"
 
 by_year = defaultdict(list)
 for it in items:
