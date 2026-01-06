@@ -132,4 +132,3 @@ with open("publications.html", 'w', encoding='utf-8') as f:
     f.write(html_text)
 
 print("Updated publications.html", file=sys.stderr)
-``
