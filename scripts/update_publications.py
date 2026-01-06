@@ -75,8 +75,7 @@ for y in years_sorted:
 ".join(lis) + "
 </ul>
     blocks.append(block_html)
-new_group_html = "
-".join(blocks) if blocks else '<p class="muted">No grouped items.</p>'
+new_group_html = " ".join(blocks) if blocks else '<p class="muted">No grouped items.</p>'
 
 # Update publications.html
 with open("publications.html", 'r', encoding='utf-8') as f:
