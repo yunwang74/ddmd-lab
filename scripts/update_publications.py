@@ -49,8 +49,7 @@ for it in items[:12]:
     doi_link = f" <a class='doi-link' href='{u}' target='_blank' rel='noopener'>DOI</a>" if u else ""
     doi_badge = f" <span class='badge badge-doi'>{doi_str}</span>" if doi_str else ""
     sel_html.append(f"<li><strong>{t}</strong>{dash}<em>{j}</em> ({y}).{doi_link}{doi_badge}</li>")
-new_list_html = "
-".join(sel_html) if sel_html else '<li class="muted">No recent items found.</li>'
+new_list_html = " ".join(sel_html) if sel_html else '<li class="muted">No recent items found.</li>'
 
 # Group by year — show DOI string on badge
 by_year = defaultdict(list)
