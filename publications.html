@@ -1,31 +1,56 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Publications</title><link rel="stylesheet" href="assets/css/style.css"/><link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg"/>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-2B172HB4HK"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-2B172HB4HK');
-</script>
-</head><body><header class="header"><div class="container header-inner"><a href="index.html" class="brand"><div class="logo"></div><div class="title">Data-Driven Materials Design Lab</div></a><nav class="nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="first-principles.html">First-Principles</a><a href="ai-assisted.html">AI-Assisted</a><a href="publications.html" class="active">Publications</a><a href="people.html">People</a><a href="join.html">Join Us</a></nav></div></header><main class="container"><section>
-  <h2>Selected Publications</h2>
-  <!-- AUTO-PUBS-START -->
-  <ul>
-    <li class="muted">No items yet. If this is unexpected, run the GitHub Action “Update Publications from ORCID”, and ensure the repository secret <code>ORCID_TOKEN</code> is set.</li>
-  </ul>
-  <!-- AUTO-PUBS-END -->
-</section>
-<section>
-  <h2>Publications by Year</h2>
-  <!-- AUTO-PUBS-YEAR-START -->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data-Driven Materials Design Lab</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+  <div class="navbar">
+    <div class="nav-inner">
+      <div class="brand">Data-Driven Materials Design Lab</div>
+      <nav class="nav">
+        <a href="index.html" class="active">Home</a>
+        <a href="first-principles.html">First‑Principles</a>
+        <a href="ai-assisted.html">AI‑Assisted</a>
+        <a href="publications.html">Publications</a>
+        <a href="people.html">People</a>
+        <a href="join.html">Join Us</a>
+      </nav>
+    </div>
+  </div>
+  <div class="container">
+
+<h2>Publications</h2>
+<p class="muted">Selected publications and grouped lists update automatically from ORCID.</p>
+
+<!-- Selected list -->
+<!-- AUTO-PUBS-START -->
+<ul>
+  <li class="muted">No items yet. Run the GitHub Action “Update Publications from ORCID”.</li>
+</ul>
+<!-- AUTO-PUBS-END -->
+
+<!-- Grouped by year -->
+<!-- AUTO-PUBS-YEAR-START -->
+<div class="pubs-by-year">
+  <p class="muted">Grouped publications will appear here after the Action runs successfully.</p>
+</div>
+<!-- AUTO-PUBS-YEAR-END -->
 
 <div class="note">
   <h3>How this page updates</h3>
   <ol>
-    <li>This page is automatically updated using the ORCID public API.</li>
+    <li>This page is automatically updated using the <strong>public ORCID API</strong>.</li>
     <li>Open <em>Actions → Update Publications from ORCID</em> and click <em>Run workflow</em>, or wait for the scheduled run.</li>
     <li>The script fetches <code>https://pub.orcid.org/v3.0/0000-0001-8619-0455/works</code> and writes into the markers above.</li>
   </ol>
   <p class="muted">No authentication or token is required.</p>
 </div>
-</section></main><footer class="footer"><div class="container"><p>&copy; <span id="year"></span> Data-Driven Materials Design Lab</p></div></footer><script>document.getElementById('year').textContent = new Date().getFullYear();</script></body></html>
+
+    <div class="footer">© 2026 Data‑Driven Materials Design Lab · Gold & Silver theme</div>
+  </div>
+</body>
+</html>
