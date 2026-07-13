@@ -1,10 +1,14 @@
-
 name: Update Publications from ORCID
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 3 * * *'  # daily at 03:00 UTC
+    - cron: '0 3 * * *'
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - publications.html
 
 permissions:
   contents: write
@@ -17,26 +21,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run updater
-        shell: bash
-        run: |
-          set -euo pipefail
-          python scripts/update_publications.py
+        run: python3 scripts/update_publications.py
 
-      - name: Commit changes (only if publications.html changed)
-        shell: bash
+      - name: Commit changes if publications changed
         run: |
-          set -euo pipefail
-          if ! git diff --quiet HEAD -- publications.html; then
+          if ! git diff --quiet -- publications.html; then
             git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
             git add publications.html
             git commit -m "Auto-update publications from ORCID"
+            git push origin HEAD:main
           else
-            echo "No changes — skip commit."
+            echo "No changes to publications.html"
           fi
-
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.8.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
